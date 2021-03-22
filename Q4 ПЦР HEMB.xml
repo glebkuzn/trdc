@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol name="Q4 ПЦР HEMB" enabled="1" repeat_count="1" repeat_enabled="0" conditional_run="0" conditional_run_index="0" var_conditional_run="0" var_conditional_run_value="0" var_conditional_run_name="" var_conditional_run_compare="0" open="1" multirun="0" id="">
+  <steps>
+    <group name="ПЦР" enabled="1" repeat_count="1" repeat_enabled="0" conditional_run="0" conditional_run_index="0" var_conditional_run="0" var_conditional_run_value="0" var_conditional_run_name="" var_conditional_run_compare="0" open="1">
+      <steps>
+        <script name="включение + очистка" enabled="1" repeat_count="1" repeat_enabled="0" conditional_run="0" conditional_run_index="0" var_conditional_run="0" var_conditional_run_value="0" var_conditional_run_name="" var_conditional_run_compare="0" script_name="" run_by_name="0">
+          <lines>comm #1 sw tec 1
+comm #1 sw pid 1
+comm #2 set expo 100
+
+detect clear
+</lines>
+        </script>
+        <script name="переназначение каналов" enabled="1" repeat_count="1" repeat_enabled="0" conditional_run="0" conditional_run_index="0" var_conditional_run="0" var_conditional_run_value="0" var_conditional_run_name="" var_conditional_run_compare="0" script_name="isoterm-setup-pribor" run_by_name="1">
+          <lines></lines>
+        </script>
+        <temp name="95" enabled="1" repeat_count="1" repeat_enabled="0" conditional_run="0" conditional_run_index="0" var_conditional_run="0" var_conditional_run_value="0" var_conditional_run_name="" var_conditional_run_compare="0" device="tec" device_index="0" chan_index="0" do_set_mode="0" mode_on="0" do_set_temp="1" target_temp="95" do_wait_stable="1" wait_interval="10" temp_tolerance="0.5" do_set_params="0" param_kp="" param_ki="" param_kd="" param_imax="" param_idelta=""/>
+        <sleep name="3 мин" enabled="1" repeat_count="1" repeat_enabled="0" conditional_run="0" conditional_run_index="0" var_conditional_run="0" var_conditional_run_value="0" var_conditional_run_name="" var_conditional_run_compare="0" interval="170000"/>
+        <group name="Цикл" enabled="1" repeat_count="45" repeat_enabled="1" conditional_run="0" conditional_run_index="0" var_conditional_run="0" var_conditional_run_value="0" var_conditional_run_name="" var_conditional_run_compare="0" open="1">
+          <steps>
+            <temp name="денатурация" enabled="1" repeat_count="1" repeat_enabled="0" conditional_run="0" conditional_run_index="0" var_conditional_run="0" var_conditional_run_value="0" var_conditional_run_name="" var_conditional_run_compare="0" device="tec" device_index="0" chan_index="0" do_set_mode="0" mode_on="0" do_set_temp="1" target_temp="96" do_wait_stable="1" wait_interval="5" temp_tolerance="0.5" do_set_params="0" param_kp="" param_ki="" param_kd="" param_imax="" param_idelta=""/>
+            <sleep name="15 сек" enabled="1" repeat_count="1" repeat_enabled="0" conditional_run="0" conditional_run_index="0" var_conditional_run="0" var_conditional_run_value="0" var_conditional_run_name="" var_conditional_run_compare="0" interval="15000"/>
+            <temp name="элонгация" enabled="1" repeat_count="1" repeat_enabled="0" conditional_run="0" conditional_run_index="0" var_conditional_run="0" var_conditional_run_value="0" var_conditional_run_name="" var_conditional_run_compare="0" device="tec" device_index="0" chan_index="0" do_set_mode="0" mode_on="0" do_set_temp="1" target_temp="63" do_wait_stable="1" wait_interval="10" temp_tolerance="0.5" do_set_params="0" param_kp="" param_ki="" param_kd="" param_imax="" param_idelta=""/>
+            <sleep name="20 сек" enabled="1" repeat_count="1" repeat_enabled="0" conditional_run="0" conditional_run_index="0" var_conditional_run="0" var_conditional_run_value="0" var_conditional_run_name="" var_conditional_run_compare="0" interval="20000"/>
+            <script name="измерение флуоресценции" enabled="1" repeat_count="1" repeat_enabled="0" conditional_run="0" conditional_run_index="0" var_conditional_run="0" var_conditional_run_value="0" var_conditional_run_name="" var_conditional_run_compare="0" script_name="isoterm-FULL-pribor25" run_by_name="1">
+              <lines></lines>
+            </script>
+            <script name="измерение рассеяния" enabled="1" repeat_count="1" repeat_enabled="0" conditional_run="0" conditional_run_index="0" var_conditional_run="0" var_conditional_run_value="0" var_conditional_run_name="" var_conditional_run_compare="0" script_name="isoterm-FULL-pribor" run_by_name="0">
+              <lines>detect next
+runscript isoterm-FAM-on
+comm #2 set gainall 1
+runscript isoterm-FAM-pribor
+runscript isoterm-FAM-detect
+runscript isoterm-off
+
+runscript isoterm-CY5-on
+comm #2 set gainall 1
+runscript isoterm-CY5-pribor
+runscript isoterm-CY5-detect
+runscript isoterm-off
+</lines>
+            </script>
+          </steps>
+        </group>
+        <script name="Отключение всего" enabled="1" repeat_count="1" repeat_enabled="0" conditional_run="0" conditional_run_index="0" var_conditional_run="0" var_conditional_run_value="0" var_conditional_run_name="" var_conditional_run_compare="0" script_name="" run_by_name="0">
+          <lines>comm #1 set tt 25
+comm #1 sw tec 0
+comm #1 sw pid 0
+</lines>
+        </script>
+      </steps>
+    </group>
+  </steps>
+</protocol>
